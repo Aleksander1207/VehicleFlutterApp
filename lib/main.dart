@@ -1,172 +1,83 @@
-// import 'dart:convert';
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:login_form/myForm.dart';
+import 'package:login_form/profileData.dart';
+import 'package:login_form/userPage.dart';
+import 'getUser.dart';
+import 'login.dart';
+import 'logout.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+void main()=>runApp(LoginForm());
+
+class LoginForm extends StatefulWidget{
   @override
-  Widget build(BuildContext context) {
+  State<StatefulWidget> createState() {
+    return _LoginFormState();
+  }
+}
+
+class _LoginFormState extends State <LoginForm>{
+  final TextEditingController _emailCont=TextEditingController();
+  final TextEditingController _passCont=TextEditingController();
+  Future<ResponseData> _data;
+  Future<UserData> _user;
+  Future<int> _out;
+
+  void _userRequest(userRequest,cookie)
+  {
+    if(userRequest=="get") {
+      setState(() {
+       _user = getUser(cookie);
+      }
+      );
+    }
+    else{
+      setState(() {
+        _out= logOut(cookie);
+        if(_out!=null){
+          _data=null;
+          _user=null;
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context){
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: LoginForm(),
-    );
-  }
-}
-
-class LoginForm extends StatelessWidget {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  void login(context) async {
-    var data = await http.post(
-      "https://omg.gara6.bg/pm-api/users/login",
-        headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': emailController.text,
-        'password': passwordController.text
-      }),
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(child: Text(jsonDecode(data.body)['statusCode']));
-      }
-    );
-    print(jsonDecode(data.body)['statusCode']);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Test Login App"),
-      ),
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            TextField(
-              obscureText: false,
-              controller: emailController,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                hintText: "Email",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(32.0)
-                )
-              ),
-            ),
-            TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                hintText: "Password",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(32.0)
-                )
-              ),
-            ),
-            RaisedButton(
-              onPressed: () {
-                login(context);
-              },
-              child: Text("login"),
-            )
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text("Login Form"),
+          ),
+        body:Center(
+          child: Column(
+            children:
+            <Widget> [
+              if(_data==null)...[
+                MyForm(_emailCont,_passCont),
+                  RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        _data = createRequest(_emailCont.text, _passCont.text);
+                        _emailCont.clear();
+                        _passCont.clear();
+                      });
+                    },
+                    textColor: Colors.white,
+                    color: Colors.blue,
+                    child: Text('Login'),
+                  ),]
+                else if(_user!=null)...[
+                  ProfileData(_user,_userRequest),
+              ]
+            else ...[
+              UserPage(_data,_userRequest),
+            ],
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  void login() async {
-    var data = await http.post(
-      "https://omg.gara6.bg/pm-api/users/login",
-        headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': emailController.text,
-        'password': passwordController.text
-      }),
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(child: Text(jsonDecode(data.body)['statusCode']));
-      }
-    );
-    print(jsonDecode(data.body)['statusCode']);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            TextField(
-              obscureText: false,
-              style: style,
-              controller: emailController,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                hintText: "Email",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(32.0)
-                )
-              ),
             ),
-            TextField(
-              obscureText: true,
-              style: style,
-              controller: passwordController,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                hintText: "Password",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(32.0)
-                )
-              ),
-            ),
-            RaisedButton(
-              onPressed: () {
-                login();
-              },
-              child: Text("login"),
-            )
-          ],
-        ),
-      )
+          ),
+        )
     );
   }
+
 }
