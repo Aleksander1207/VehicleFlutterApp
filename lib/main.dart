@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:login_form/myForm.dart';
-import 'package:login_form/profileData.dart';
-import 'package:login_form/userPage.dart';
+import './home.dart';
+import './profile.dart';
 import 'getUser.dart';
 import 'login.dart';
 import 'logout.dart';
+import 'myForm.dart';
 
 
 void main()=>runApp(LoginForm());
@@ -45,9 +45,10 @@ class _LoginFormState extends State <LoginForm>{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
-      home: Scaffold(
+        home: (_data!=null && _user==null) ? HomeScreen(_data,_userRequest):
+       Scaffold(
           appBar: AppBar(
-            title: Text("Login Form"),
+            title: Text('Login Form'),
           ),
         body:Center(
           child: Column(
@@ -69,11 +70,8 @@ class _LoginFormState extends State <LoginForm>{
                   ),]
                 else if(_user!=null)...[
                   ProfileData(_user,_userRequest),
-              ]
-            else ...[
-              UserPage(_data,_userRequest),
-            ],
-          ],
+              ],
+             ],
             ),
           ),
         )
