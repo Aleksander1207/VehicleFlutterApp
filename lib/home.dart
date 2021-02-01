@@ -3,10 +3,9 @@ import 'package:test_flutter_app/login.dart';
 import 'drawer.dart';
 
 class HomeScreen extends StatelessWidget{
-  final Function userRequest;
   final Future<ResponseData> data;
 
-  HomeScreen(this.data,this.userRequest);
+  HomeScreen(this.data);
 
   @override
   Widget build(BuildContext context){
@@ -18,20 +17,20 @@ class HomeScreen extends StatelessWidget{
               appBar: AppBar(
                 title: Text('Logged in'),
               ),
-              drawer: MyDrawer(userRequest,snapshot.data.email,snapshot.data.cookie),
+              drawer: MyDrawer(snapshot.data.email,snapshot.data.cookie,data),
               body: Container(
                 child:Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Welcome!',
-                      style: TextStyle(
-                        fontSize: 38,
-                        color: Colors.blue,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Welcome!',
+                        style: TextStyle(
+                          fontSize: 38,
+                          color: Colors.blue,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 ),
               ),
             );
