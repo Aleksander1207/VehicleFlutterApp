@@ -10,7 +10,6 @@ Future<int> logOut(String cookie) async{
     },
   );
 
-  print(response.body);
   if(response.statusCode==200){
     return (response.statusCode);
   }

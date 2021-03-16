@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/vehiclesBuilder.dart';
-import 'drawer.dart';
+import 'vehicleForm.dart';
+import 'vehicleFormSetup.dart';
+import 'vehiclesBuilder.dart';
+import 'loggedInFiles/drawer.dart';
 import 'getVehicles.dart';
 import 'login.dart';
 
@@ -22,9 +24,19 @@ class VehiclesList extends StatelessWidget{
               appBar: AppBar(
                   title:Text('Vehicles')
               ),
+              floatingActionButton: FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: (){
+                  List<dynamic> vehicleData = vehicleFormSetup(cookie);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VehicleForm(null, null,vehicleData[0],vehicleData[1],vehicleData[2]),),
+                  );
+                },
+              ),
               drawer: MyDrawer(email,cookie,data),
               body:Container(
-                  child: VehiclesBuilder(snapshot),
+                  child: VehiclesBuilder(snapshot,cookie),
               ),
           );
         }

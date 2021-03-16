@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'drawer.dart';
-import 'getUser.dart';
-import 'login.dart';
+import '../getUser.dart';
+import '../login.dart';
 
 class ProfileData extends StatelessWidget{
   final Future<UserData> user;

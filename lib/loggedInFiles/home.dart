@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/login.dart';
-import 'drawer.dart';
+import '../login.dart';
+import './drawer.dart';
+
 
 class HomeScreen extends StatelessWidget{
   final Future<ResponseData> data;

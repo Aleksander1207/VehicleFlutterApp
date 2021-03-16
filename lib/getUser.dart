@@ -29,7 +29,6 @@ Future<UserData> getUser(String cookie)async{
     },
   );
 
-  print(response.body);
   if(response.statusCode==200){
     return UserData.fromJson(jsonDecode(response.body),cookie);
   }

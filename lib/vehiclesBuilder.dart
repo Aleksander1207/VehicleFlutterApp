@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/vehicleInfo.dart';
+import 'vehicleInfo.dart';
 
 class VehiclesBuilder extends StatelessWidget{
   final dynamic snapshot;
+  final String cookie;
 
-  VehiclesBuilder(this.snapshot);
+  VehiclesBuilder(this.snapshot,this.cookie);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class VehiclesBuilder extends StatelessWidget{
               onTap: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VehicleInfo(item)),
+                  MaterialPageRoute(builder: (context) => VehicleInfo(item,cookie)),
                 );
               },
             ),

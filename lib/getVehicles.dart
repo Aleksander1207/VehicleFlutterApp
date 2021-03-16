@@ -23,8 +23,6 @@ Future<Vehicles> getVehicles(String cookie)async{
     },
   );
 
-  print(response.body);
-
   if(response.statusCode==200){
     return Vehicles.fromJson(jsonDecode(response.body));
   }

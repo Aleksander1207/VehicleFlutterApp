@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter_app/getVehicles.dart';
-import './vehicles.dart';
-import './getUser.dart';
-import './profile.dart';
-import 'drawerHeader.dart';
-import 'home.dart';
-import 'listTile.dart';
-import 'login.dart';
-import 'logout.dart';
+import '../getVehicles.dart';
+import '../vehicles.dart';
+import '../getUser.dart';
+import 'profile.dart';
+import './drawerHeader.dart';
+import './home.dart';
+import '../listTile.dart';
+import '../login.dart';
+import '../logout.dart';
 
 
 class MyDrawer extends StatelessWidget{
